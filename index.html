@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konoha Scanner</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#111;
+    color:white;
+    text-align:center;
+}
+
+h1 {
+    padding:20px;
+    background:black;
+}
+
+#reader {
+    width:90%;
+    margin:auto;
+}
+
+.box {
+    margin:20px;
+    padding:20px;
+    border-radius:15px;
+    font-size:18px;
+}
+
+.warning {
+    background:#b00020;
+}
+
+.safe {
+    background:#087f23;
+}
+
+button {
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>📷 Konoha Scanner</h1>
+
+<div id="reader"></div>
+
+<div id="result"></div>
+
+
+<script>
+
+function showResult(type,text){
+
+let box=document.getElementById("result");
+
+if(type=="warning"){
+box.innerHTML=
+`
+<div class="box warning">
+<h2>⚠️ AMARAN</h2>
+<p>${text}</p>
+</div>
+`;
+}
+
+else{
+box.innerHTML=
+`
+<div class="box safe">
+<h2>✅ PRODUK SELAMAT</h2>
+<p>${text}</p>
+</div>
+`;
+}
+
+}
+
+
+function scanSuccess(decodedText){
+
+scanner.clear();
+
+if(decodedText.startsWith("899")){
+
+showResult(
+"warning",
+"Kod bar: "+decodedText+
+"<br><br>dont buy this product from konoha"
+);
+
+}
+
+else{
+
+showResult(
+"safe",
+"Kod Bar: "+decodedText+
+"<br><br>Produk ini bukan dari kod 899."
+);
+
+}
+
+}
+
+
+let scanner = new Html5QrcodeScanner(
+"reader",
+{
+fps:10,
+qrbox:{width:250,height:150}
+}
+);
+
+
+scanner.render(scanSuccess);
+
+
+</script>
+
+</body>
+</html>
